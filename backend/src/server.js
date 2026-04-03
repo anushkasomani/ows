@@ -9,6 +9,7 @@ import { createPaywall } from "@x402/paywall";
 import { evmPaywall } from "@x402/paywall/evm";
 import { DEFAULT_TOPIC, runAutonomousBusiness } from "./agent.js";
 import { initializeDatabase } from "./db.js";
+import { resolvePublicServerUrl } from "./public-url.js";
 import {
   addSubscriber,
   createNewsletter,
@@ -32,17 +33,32 @@ const SHOW_AGENT_CONTROLS = parseBoolean(
   process.env.SHOW_AGENT_CONTROLS,
   AGENT_ENABLED
 );
-const PUBLIC_SERVER_URL =
-  process.env.SERVER_URL ||
-  process.env.RENDER_EXTERNAL_URL ||
-  (process.env.RAILWAY_PUBLIC_DOMAIN
-    ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-    : `http://localhost:${PORT}`);
+const PUBLIC_SERVER_URL = resolvePublicServerUrl(PORT);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.resolve(__dirname, "../public");
 
 const app = express();
+app.set("trust proxy", true);
+app.use((req, res, next) => {
+  const forwardedProto = req.headers["x-forwarded-proto"];
+  const host = String(req.headers.host || "").toLowerCase();
+  const isLocalHost =
+    host.startsWith("localhost:") ||
+    host === "localhost" ||
+    host.startsWith("127.0.0.1:") ||
+    host === "127.0.0.1";
+
+  if (
+    typeof forwardedProto !== "string" &&
+    !isLocalHost &&
+    (host.includes("railway.app") || process.env.NODE_ENV === "production")
+  ) {
+    req.headers["x-forwarded-proto"] = "https";
+  }
+
+  next();
+});
 app.use(express.json());
 app.use(express.static(publicDir));
 

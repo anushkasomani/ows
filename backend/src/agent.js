@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { ethers } from "ethers";
 import Groq from "groq-sdk";
 import nodemailer from "nodemailer";
+import { resolvePublicServerUrl } from "./public-url.js";
 import { recordExpense, updateNewsletterContent } from "./store.js";
 
 dotenv.config();
@@ -17,12 +18,7 @@ const SEPOLIA_RPC_URL = "https://ethereum-sepolia.publicnode.com";
 
 const provider = new ethers.JsonRpcProvider(SEPOLIA_RPC_URL);
 let paymentQueue = Promise.resolve();
-const PUBLIC_SERVER_URL =
-  process.env.SERVER_URL ||
-  process.env.RENDER_EXTERNAL_URL ||
-  (process.env.RAILWAY_PUBLIC_DOMAIN
-    ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
-    : "http://localhost:3000");
+const PUBLIC_SERVER_URL = resolvePublicServerUrl(process.env.PORT);
 
 export const DEFAULT_TOPIC = "Latest tech news";
 const FIRECRAWL_LIMIT = 3;
