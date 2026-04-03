@@ -1,0 +1,28 @@
+{
+  "name": "ows",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "server": "node src/server.js",
+    "agent": "node src/index.js",
+    "check": "node --check src/server.js && node --check src/index.js && node --check src/agent.js && node --check src/db.js && node --check src/store.js"
+  },
+  "dependencies": {
+    "@open-wallet-standard/core": "^1.2.0",
+    "@x402/core": "^2.9.0",
+    "@x402/evm": "^2.9.0",
+    "@x402/express": "^2.9.0",
+    "@x402/paywall": "^2.9.0",
+    "dotenv": "^17.4.0",
+    "ethers": "^6.16.0",
+    "express": "^5.1.0",
+    "groq-sdk": "^1.1.2",
+    "nodemailer": "^8.0.4",
+    "pg": "^8.16.3"
+  }
+}

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autonomous Newsletter Business</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7f1e8;
+        --ink: #111111;
+        --panel: #fff9f2;
+        --yellow: #ffd84d;
+        --green: #77f28b;
+        --red: #ff6b57;
+        --blue: #7bdff2;
+        --pink: #ff96d6;
+        --shadow: 8px 8px 0 var(--ink);
+        --shadow-small: 4px 4px 0 var(--ink);
+        --radius: 22px;
+        --border: 3px solid var(--ink);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        background:
+          linear-gradient(135deg, rgba(255, 216, 77, 0.35), transparent 35%),
+          linear-gradient(225deg, rgba(123, 223, 242, 0.25), transparent 30%),
+          repeating-linear-gradient(
+            -45deg,
+            #f7f1e8,
+            #f7f1e8 22px,
+            #f1e8dc 22px,
+            #f1e8dc 44px
+          );
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 60px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .badge,
+      .mini-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: var(--border);
+        border-radius: 999px;
+        padding: 10px 16px;
+        background: #fff;
+        box-shadow: var(--shadow-small);
+        font-weight: 700;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+        align-items: stretch;
+        margin-bottom: 28px;
+      }
+
+      .hero-card,
+      .panel,
+      .activity-panel,
+      .archive-card {
+        border: var(--border);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card {
+        padding: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-card::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        right: -36px;
+        top: -26px;
+        background: var(--pink);
+        border: var(--border);
+        border-radius: 30px;
+        transform: rotate(14deg);
+      }
+
+      .subscribe-card::after {
+        display: none;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 1;
+        max-width: 620px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin-bottom: 14px;
+        padding: 8px 12px;
+        border: var(--border);
+        border-radius: 999px;
+        background: var(--yellow);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      .metric-value {
+        font-family: "Bricolage Grotesque", sans-serif;
+      }
+
+      h1 {
+        margin: 0 0 14px;
+        font-size: clamp(3rem, 7vw, 5.8rem);
+        line-height: 0.94;
+        letter-spacing: -0.05em;
+      }
+
+      .hero-copy p {
+        max-width: 620px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0 0 18px;
+      }
+
+      .hero-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .strip-card {
+        padding: 12px 14px;
+        border: var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow-small);
+        background: #fff;
+        font-weight: 700;
+      }
+
+      .strip-card:nth-child(2) {
+        background: var(--blue);
+      }
+
+      .strip-card:nth-child(3) {
+        background: var(--green);
+      }
+
+      .subscribe-card {
+        padding: 24px;
+        background: var(--blue);
+      }
+
+      .subscribe-card h2 {
+        margin: 0 0 10px;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .subscribe-card p {
+        margin: 0 0 20px;
+        line-height: 1.5;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .input,
+      .button {
+        width: 100%;
+        border: var(--border);
+        border-radius: 18px;
+        font: inherit;
+      }
+
+      .input {
+        padding: 16px 18px;
+        background: #fff;
+        box-shadow: var(--shadow-small);
+      }
+
+      .button {
+        padding: 16px 18px;
+        background: var(--yellow);
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: var(--shadow-small);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+      }
+
+      .button:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+
+      .button:disabled {
+        cursor: wait;
+        opacity: 0.7;
+      }
+
+      .status-note {
+        min-height: 24px;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+
+      .dashboard {
+        margin: 28px 0;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: 2rem;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .metric-label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .metric-value {
+        margin: 0;
+        font-size: clamp(1.6rem, 3.8vw, 2.5rem);
+        line-height: 1;
+      }
+
+      .metric-subtle {
+        margin-top: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+
+      .green {
+        background: var(--green);
+      }
+
+      .red {
+        background: #ffc8c1;
+      }
+
+      .yellow {
+        background: var(--yellow);
+      }
+
+      .pink {
+        background: var(--pink);
+      }
+
+      .blue {
+        background: var(--blue);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      .archive-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .archive-card {
+        padding: 18px;
+        background: #fff;
+      }
+
+      .archive-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .archive-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.6rem;
+        line-height: 1.05;
+      }
+
+      .archive-card p {
+        margin: 0 0 18px;
+        color: rgba(17, 17, 17, 0.8);
+        line-height: 1.6;
+      }
+
+      .archive-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .read-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 210px;
+        padding: 14px 18px;
+        border: var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow-small);
+        background: var(--yellow);
+        text-decoration: none;
+        font-weight: 800;
+      }
+
+      .read-link.disabled {
+        pointer-events: none;
+        background: #e3dfd7;
+      }
+
+      .activity-panel {
+        padding: 18px;
+        background: #111;
+        color: #f9fff9;
+      }
+
+      .activity-panel h2 {
+        margin: 0 0 14px;
+        color: #fff36d;
+        font-size: 2rem;
+      }
+
+      .terminal {
+        border: 3px solid #fff36d;
+        border-radius: 18px;
+        background: #191919;
+        padding: 14px;
+        min-height: 560px;
+        max-height: 760px;
+        overflow: auto;
+        font-size: 0.97rem;
+        box-shadow: 6px 6px 0 #fff36d;
+      }
+
+      .log {
+        display: grid;
+        gap: 12px;
+      }
+
+      .log-line {
+        padding-bottom: 12px;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.18);
+      }
+
+      .log-line:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .log-top {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .kind {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border: 2px solid currentColor;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .kind.expense {
+        color: #ff9d8d;
+      }
+
+      .kind.payment {
+        color: #9fff7b;
+      }
+
+      .log-body {
+        margin: 0;
+        line-height: 1.55;
+      }
+
+      .empty-state {
+        border: var(--border);
+        border-radius: 18px;
+        padding: 18px;
+        background: #fff;
+        box-shadow: var(--shadow-small);
+        font-weight: 700;
+      }
+
+      .footer-note {
+        margin-top: 28px;
+        padding: 18px 20px;
+        border: var(--border);
+        border-radius: 22px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        font-weight: 700;
+      }
+
+      @media (max-width: 1040px) {
+        .hero,
+        .content-grid,
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .terminal {
+          min-height: 420px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 20px, 100%);
+          padding-top: 20px;
+        }
+
+        .hero-card,
+        .subscribe-card,
+        .panel,
+        .archive-card,
+        .activity-panel,
+        .footer-note {
+          box-shadow: 5px 5px 0 var(--ink);
+        }
+
+        h1 {
+          font-size: 3rem;
+        }
+
+        .topbar,
+        .section-head,
+        .archive-actions,
+        .log-top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="topbar">
+        <span class="badge">OWS + x402 + Groq + Firecrawl</span>
+        <span class="mini-badge">Base Sepolia / Sepolia</span>
+      </div>
+
+      <section class="hero">
+        <article class="hero-card">
+          <div class="hero-copy">
+            <span class="eyebrow">Open Wallet Standard Hackathon</span>
+            <h1>The first self-funded tech newsletter.</h1>
+            <p>
+              An autonomous agent scrapes the latest tech news, writes premium
+              issues, emails subscribers, charges per issue with x402, and
+              keeps an on-chain business ledger in public view.
+            </p>
+            <div class="hero-strip">
+              <div class="strip-card">Firecrawl scrape: $0.01 equivalent</div>
+              <div class="strip-card">Issue unlock: $0.01 USDC</div>
+              <div class="strip-card">Transparent P&amp;L per issue</div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="subscribe-card hero-card">
+          <h2>Subscribe to the machine.</h2>
+          <p>
+            Drop an email and the agent will create a latest-tech-news issue,
+            send the teaser, and push the full story into the paid archive.
+          </p>
+          <form id="subscribe-form" class="form-grid">
+            <input
+              class="input"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              required
+            />
+            <input
+              class="input"
+              type="text"
+              id="topic"
+              name="topic"
+              placeholder="Optional topic override, e.g. latest tech news"
+            />
+            <button class="button" type="submit" id="subscribe-button">
+              Launch The Agent
+            </button>
+          </form>
+          <div class="status-note" id="subscribe-status"></div>
+        </aside>
+      </section>
+
+      <section class="dashboard">
+        <div class="section-head">
+          <h2>Live P&amp;L Dashboard</h2>
+          <span class="mini-badge" id="eth-price-pill">ETH: loading...</span>
+        </div>
+        <div class="metrics" id="metrics">
+          <article class="panel green">
+            <span class="metric-label">Total Earned</span>
+            <p class="metric-value" id="earned">$0.00</p>
+            <div class="metric-subtle">Revenue from newsletter unlocks</div>
+          </article>
+          <article class="panel red">
+            <span class="metric-label">Total Spent</span>
+            <p class="metric-value" id="spent">$0.00</p>
+            <div class="metric-subtle" id="spent-eth">0 ETH spent</div>
+          </article>
+          <article class="panel yellow">
+            <span class="metric-label">Net P&amp;L</span>
+            <p class="metric-value" id="net">$0.00</p>
+            <div class="metric-subtle">Can the agent break even?</div>
+          </article>
+          <article class="panel blue">
+            <span class="metric-label">Payments</span>
+            <p class="metric-value" id="payments">0</p>
+            <div class="metric-subtle">Micropayments received</div>
+          </article>
+          <article class="panel pink">
+            <span class="metric-label">Subscribers</span>
+            <p class="metric-value" id="subscribers">0</p>
+            <div class="metric-subtle">Emails in the business</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <section>
+          <div class="section-head">
+            <h2>Newsletter Archive</h2>
+            <span class="mini-badge" id="archive-count">0 issues</span>
+          </div>
+          <div class="archive-list" id="archive-list"></div>
+        </section>
+
+        <aside class="activity-panel">
+          <h2>Live Agent Feed</h2>
+          <div class="terminal">
+            <div class="log" id="activity-log"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="footer-note">
+        This demo treats the newsletter like a real business: costs are logged as
+        agent expenses, revenue is logged per paid issue, and the frontend keeps
+        score in real time.
+      </section>
+    </main>
+
+    <script>
+      const money = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      });
+
+      const compact = new Intl.NumberFormat("en-US");
+
+      const pnlEls = {
+        earned: document.getElementById("earned"),
+        spent: document.getElementById("spent"),
+        net: document.getElementById("net"),
+        payments: document.getElementById("payments"),
+        subscribers: document.getElementById("subscribers"),
+        spentEth: document.getElementById("spent-eth"),
+        ethPrice: document.getElementById("eth-price-pill"),
+      };
+
+      const archiveList = document.getElementById("archive-list");
+      const archiveCount = document.getElementById("archive-count");
+      const activityLog = document.getElementById("activity-log");
+      const subscribeForm = document.getElementById("subscribe-form");
+      const subscribeButton = document.getElementById("subscribe-button");
+      const subscribeStatus = document.getElementById("subscribe-status");
+      const topicInput = document.getElementById("topic");
+      let appConfig = {
+        agentEnabled: true,
+        showAgentControls: true,
+        defaultTopic: "Latest tech news",
+      };
+
+      loadConfig();
+
+      subscribeForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const payload = {
+          email: document.getElementById("email").value.trim(),
+          topic: document.getElementById("topic").value.trim(),
+        };
+
+        subscribeButton.disabled = true;
+        subscribeStatus.textContent = "Spinning up the agent...";
+
+        try {
+          const response = await fetch("/subscribe", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Subscription failed.");
+          }
+
+          subscribeForm.reset();
+          subscribeStatus.textContent = data.newsletterId
+            ? `${data.message} Issue #${data.newsletterId} is on the way.`
+            : data.message;
+          await Promise.all([loadPnl(), loadArchive(), loadActivity()]);
+        } catch (error) {
+          subscribeStatus.textContent = error.message;
+        } finally {
+          subscribeButton.disabled = false;
+        }
+      });
+
+      async function loadPnl() {
+        try {
+          const response = await fetch("/api/pnl");
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "P&L unavailable.");
+          }
+
+          pnlEls.earned.textContent = money.format(data.totalEarnedUsd || 0);
+          pnlEls.spent.textContent = money.format(data.totalSpentUsd || 0);
+          pnlEls.net.textContent = money.format(data.netUsd || 0);
+          pnlEls.net.style.color = data.netUsd >= 0 ? "#0f6f2a" : "#9f1d14";
+          pnlEls.payments.textContent = compact.format(data.paymentCount || 0);
+          pnlEls.subscribers.textContent = compact.format(
+            data.subscriberCount || 0
+          );
+          pnlEls.spentEth.textContent = `${Number(
+            data.totalSpentEth || 0
+          ).toFixed(6)} ETH spent`;
+          pnlEls.ethPrice.textContent = `ETH: ${money.format(
+            data.ethPriceUsd || 0
+          )}`;
+        } catch (error) {
+          pnlEls.ethPrice.textContent = "ETH: unavailable";
+        }
+      }
+
+      async function loadArchive() {
+        try {
+          const response = await fetch("/api/newsletters");
+          const newsletters = await response.json();
+
+          if (!response.ok) {
+            throw new Error(newsletters.error || "Archive unavailable.");
+          }
+
+          archiveCount.textContent = `${newsletters.length} issues`;
+
+          if (!newsletters.length) {
+            archiveList.innerHTML = `
+              <div class="empty-state">
+                No issues yet. Subscribe above to trigger the first autonomous tech-news run.
+              </div>
+            `;
+            return;
+          }
+
+          archiveList.innerHTML = newsletters
+            .map((newsletter) => {
+              const isReady = newsletter.isReady;
+
+              return `
+                <article class="archive-card">
+                  <div class="archive-meta">
+                    <span class="mini-badge">Issue #${newsletter.id}</span>
+                    <span class="mini-badge">${formatDate(
+                      newsletter.createdAt
+                    )}</span>
+                    <span class="mini-badge">${newsletter.paymentCount} payments</span>
+                  </div>
+                  <h3>${escapeHtml(newsletter.topic)}</h3>
+                  <p>${escapeHtml(newsletter.teaser || "Issue is being generated.")}</p>
+                  <div class="archive-actions">
+                    <strong>${money.format(newsletter.revenueUsdc || 0)} earned</strong>
+                    <a
+                      class="read-link ${isReady ? "" : "disabled"}"
+                      href="/newsletter/${newsletter.id}"
+                    >
+                      ${
+                        isReady
+                          ? "Read Issue - $0.01 USDC"
+                          : "Publishing Soon"
+                      }
+                    </a>
+                  </div>
+                </article>
+              `;
+            })
+            .join("");
+        } catch (error) {
+          archiveList.innerHTML = `
+            <div class="empty-state">Archive failed to load.</div>
+          `;
+        }
+      }
+
+      async function loadActivity() {
+        try {
+          const response = await fetch("/api/activity");
+          const activity = await response.json();
+
+          if (!response.ok) {
+            throw new Error(activity.error || "Activity unavailable.");
+          }
+
+          if (!activity.length) {
+            activityLog.innerHTML = `
+              <div class="log-line">
+                <div class="log-body">No agent activity yet. The first tech-news run will show up here.</div>
+              </div>
+            `;
+            return;
+          }
+
+          activityLog.innerHTML = activity
+            .map((item) => {
+              const body =
+                item.kind === "expense"
+                  ? `Paid ${item.costEth} ETH for ${escapeHtml(
+                      item.serviceName
+                    )} on issue #${item.newsletterId}.`
+                  : `Issue #${item.newsletterId} purchased for ${money.format(
+                      item.amountUsdc || 0
+                    )} by ${shorten(item.payerAddress || "unknown payer")}.`;
+
+              return `
+                <div class="log-line">
+                  <div class="log-top">
+                    <span class="kind ${item.kind}">${item.kind}</span>
+                  </div>
+                  <p class="log-body">${body}</p>
+                  <small>${escapeHtml(item.topic || "Autonomous tech-news business")}</small>
+                </div>
+              `;
+            })
+            .join("");
+        } catch (error) {
+          activityLog.innerHTML = `
+            <div class="log-line">
+              <div class="log-body">Activity feed failed to load.</div>
+            </div>
+          `;
+        }
+      }
+
+      function formatDate(date) {
+        return new Date(date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      }
+
+      async function loadConfig() {
+        try {
+          const response = await fetch("/api/config");
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.error || "Config unavailable.");
+          }
+
+          appConfig = data;
+
+          if (!appConfig.showAgentControls) {
+            topicInput.style.display = "none";
+            subscribeButton.textContent = "Subscribe";
+          } else {
+            topicInput.placeholder =
+              `Optional topic override, e.g. ${appConfig.defaultTopic}`;
+          }
+        } catch (error) {
+          subscribeButton.textContent = "Subscribe";
+          topicInput.style.display = "none";
+        }
+      }
+
+      function shorten(value) {
+        if (value.length <= 14) return value;
+        return `${value.slice(0, 6)}...${value.slice(-4)}`;
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      loadPnl();
+      loadArchive();
+      loadActivity();
+
+      setInterval(loadPnl, 5000);
+      setInterval(loadArchive, 10000);
+      setInterval(loadActivity, 3000);
+    </script>
+  </body>
+</html>
